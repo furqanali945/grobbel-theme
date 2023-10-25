@@ -45,3 +45,19 @@ function hello_elementor_child_scripts_styles() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'hello_elementor_child_scripts_styles', 20 );
+
+
+function add_script_to_footer_for_product_categories() {
+    if ( is_tax( 'product_categories' ) ) {
+        // Check if it's a 'product_categories' archive page
+        wp_enqueue_script(
+            'custom-product-category-script',
+            get_stylesheet_directory_uri() . '/assets/js/custom_product_archive.js', 
+            array(), 
+            '1.1', 
+            true 
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'add_script_to_footer_for_product_categories');
+
