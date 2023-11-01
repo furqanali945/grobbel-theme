@@ -43,3 +43,48 @@ function grobbels_product_categories() {
 
 }
 add_shortcode( 'grobbels_product_categories', 'grobbels_product_categories' );
+
+
+// Grobbels recipe categories shortcode
+function grobbels_recipe_categories() {
+
+	// Query the terms from the 'product_categories' taxonomy
+    $args = array(
+        'taxonomy' => 'recipe_categories',
+        'hide_empty' => false, // Display empty terms
+        'number' => 10,
+        'orderby' => 'ID',
+        'order' => 'ASC'
+    );
+
+    $terms = get_terms($args);
+
+	$output = '<div class="grobbels_category_main grobbels_recipe_main">';
+    if (!empty($terms)) {
+        foreach ($terms as $term) {
+            $category_featured_image = get_term_meta($term->term_id, 'category_featured_image', true);
+
+            $output .= '<div class="category_box">';
+	            $output .= '<div class="category_box_left">';
+		            if (!empty($category_featured_image)) {
+		            	$image_alt = get_post_meta(attachment_url_to_postid($category_featured_image), '_wp_attachment_image_alt', true);
+
+		                $output .= '<img src="' . esc_url($category_featured_image) . '" alt="' . esc_attr($image_alt) . '" />';
+		            }
+	            $output .= '</div>';
+	            $output .= '<div class="category_box_right">';
+		            $output .= '<h2>' . $term->name . '</h2>';
+		            $output .= '<p>' . $term->description . '</p>';
+		            $output .= '<a href="' . get_term_link($term) . '" class="btn_view_products">View Recipes</a>';
+	            $output .= '</div>';
+            $output .= '</div>';
+        }
+    } else {
+        $output .= 'No recipe categories found.';
+    }
+    $output .= '</div>';
+
+	return $output;
+
+}
+add_shortcode( 'grobbels_recipe_categories', 'grobbels_recipe_categories' );
