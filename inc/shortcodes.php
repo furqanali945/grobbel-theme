@@ -87,3 +87,48 @@ function grobbels_recipe_categories() {
     return $output;
 }
 add_shortcode('grobbels_recipe_categories', 'grobbels_recipe_categories');
+
+
+// Grobbels cooking guide categories shortcode
+function grobbels_guide_categories() {
+    // Query the terms from the 'guide_categories' taxonomy
+    $args = array(
+        'taxonomy' => 'guide_categories',
+        'hide_empty' => false, // Display empty terms
+        'number' => 10,
+        'orderby' => 'ID',
+        'order' => 'ASC',
+    );
+
+    $terms = get_terms($args);
+
+    $output = '<div class="grobbels_category_main grobbels_recipe_main">';
+    
+    if (!empty($terms)) {
+        foreach ($terms as $term) {
+            // Use ACF functions to retrieve custom field values
+            $category_featured_image = get_field('guide_category_featured_image', 'guide_categories_' . $term->term_id);
+
+            $output .= '<div class="category_box">';
+            $output .= '<div class="category_box_left">';
+            
+            if (!empty($category_featured_image)) {
+                $image_alt = get_post_meta(attachment_url_to_postid($category_featured_image), '_wp_attachment_image_alt', true);
+                $output .= '<img src="' . esc_url($category_featured_image) . '" alt="' . esc_attr($image_alt) . '" />';
+            }
+            
+            $output .= '</div>';
+            $output .= '<div class="category_box_right">';
+            $output .= '<h2>' . $term->name . '</h2>';
+            $output .= '<a href="' . get_term_link($term) . '" class="btn_view_products">View Instructions</a>';
+            $output .= '</div>';
+            $output .= '</div>';
+        }
+    } else {
+        $output .= 'No cooking guide categories found.';
+    }
+    $output .= '</div>';
+
+    return $output;
+}
+add_shortcode('grobbels_guide_categories', 'grobbels_guide_categories');
