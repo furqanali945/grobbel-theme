@@ -22,9 +22,6 @@ require get_stylesheet_directory() . '/inc/custom-post-types.php';
 // Include custom taxonomies
 require get_stylesheet_directory() . '/inc/taxonomies.php';
 
-// Include term meta fields
-//require get_stylesheet_directory() . '/inc/term-meta-fields.php';
-
 // Include shortcodes
 require get_stylesheet_directory() . '/inc/shortcodes.php';
 
