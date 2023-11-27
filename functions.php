@@ -47,18 +47,6 @@ add_action( 'wp_enqueue_scripts', 'hello_elementor_child_scripts_styles', 20 );
 function add_script_to_footer_for_product_categories() {
     // Check if it's a 'product_categories' archive page
     if ( is_tax( 'product_categories' ) ) {
-        //logic for dynamic banner image based on category
-        $term = get_queried_object();
-        $banner_image_url = get_field('category_banner_image_1', 'product_categories_' . $term->term_id);
-
-        if ($banner_image_url) {
-            wp_enqueue_script('custom-banner-script', get_stylesheet_directory_uri() . '/assets/js/custom-banner-script.js', array('jquery'), null, true);
-
-            wp_localize_script('custom-banner-script', 'customBannerData', array(
-                'bannerImageUrl' => $banner_image_url
-            ));
-        }  
-
         // adding script to show no product message on the product archive page
         wp_enqueue_script(
             'custom-product-category-script',
@@ -68,13 +56,23 @@ function add_script_to_footer_for_product_categories() {
             true 
         );
     }
-
     // Check if it's a 'recipe_categories' archive page
     if ( is_tax( 'recipe_categories' ) ) {
         // adding script to show no recipe message on the recipe archive page
         wp_enqueue_script(
             'custom-recipe-category-script',
             get_stylesheet_directory_uri() . '/assets/js/custom_recipe_archive.js', 
+            array(), 
+            '1.1', 
+            true 
+        );
+    }
+    // Check if it's a 'guide_categories' archive page
+    if ( is_tax( 'guide_categories' ) ) {
+        // adding script to show no guide message on the guide archive page
+        wp_enqueue_script(
+            'custom-guide-category-script',
+            get_stylesheet_directory_uri() . '/assets/js/custom_guide_archive.js', 
             array(), 
             '1.1', 
             true 
